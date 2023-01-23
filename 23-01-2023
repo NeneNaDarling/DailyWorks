@@ -38,3 +38,34 @@ class Solution {
         return Len;
     }
 }
+
+
+
+
+Longest Substring with At Least K Repeating Characters
+----------------------------------------------------------------
+
+code in java:-----
+
+class Solution {
+    public int longestSubstring(String s, int k) {
+        return kchar(s.toCharArray(),0,s.length(),k);
+    }
+    int kchar(char[] ch,int start,int end,int k){
+        if(end-start<k)
+            return 0;
+        int[] count=new int[26];
+        for(int i=start;i<end;i++){
+            count[ch[i]-'a']++;
+        }
+        for(int i=start;i<end;i++){
+            if(count[ch[i]-'a']<k){
+                int j=i+1;
+                return Math.max(kchar(ch,start,i,k),kchar(ch,j,end,k));
+            }
+        }
+        return end-start;
+    }
+}
+
+
