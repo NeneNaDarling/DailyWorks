@@ -1,0 +1,24 @@
+ Deepest Leaves Sum
+-----------------------------------
+class Solution {
+    public int deepestLeavesSum(TreeNode root) {
+        if(root==null)
+            return 0;
+        Queue<TreeNode> Q=new LinkedList<>();
+        Q.add(root);
+        int dsum=0;
+        while(!Q.isEmpty()){
+            int size=Q.size();
+            dsum=0;
+            for(int i=0;i<size;i++){
+                TreeNode curr=Q.poll();
+                dsum+=curr.val;
+                if(curr.left!=null)
+                    Q.add(curr.left);
+                if(curr.right!=null)
+                    Q.add(curr.right);
+            }
+        }
+        return dsum;
+    }
+}
