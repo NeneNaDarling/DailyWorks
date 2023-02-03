@@ -1,0 +1,84 @@
+validate Binary Tree
+---------------------------------------------
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return valid(root,Long.MIN_VALUE,Long.MAX_VALUE);
+    }
+    boolean valid(TreeNode root,long min,long max){
+        if(root==null)
+            return true;
+        if(min<root.val && max>root.val)
+        {
+            return valid(root.left,min,root.val) && valid(root.right,root.val,max);
+        }
+        return false;
+    }
+}
+
+
+
+Lowest Common Ansestor in bst
+--------------------------------------------
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null || root==p || root==q)
+            return root;
+        else{
+            TreeNode Left=lowestCommonAncestor(root.left,p,q);
+            TreeNode Right=lowestCommonAncestor(root.right,p,q);
+            if(Left==null)
+                return Right;
+            if(Right==null)
+                return Left;
+            else
+                return root;
+        }
+    }
+}
+
+
+TWO SUm IV
+--------------------------
+class Main{
+     Stack<TreeNode> Stk=new Stack<TreeNode>();
+     boolean reverse=true;
+     public Main(TreeNode root,boolean isReverse){
+         reverse=isReverse;
+         PushAll(root);
+     }
+     public void PushAll(TreeNode node){
+         while(node!=null){
+            Stk.push(node);
+            if(reverse==true)
+                node=node.right;
+            else
+                node=node.left;
+         }
+     }
+    public int next(){
+        TreeNode temp=Stk.pop();
+        if(reverse==true)
+            PushAll(temp.left);
+        else
+            PushAll(temp.right);
+        return temp.val;
+     }
+ }
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Main left=new Main(root,false);
+        Main Right=new Main(root,true);
+        int i=left.next();
+        int j=Right.next();
+        while(i<j){
+            if(i+j==k)
+                return true;
+            else if(i+j<k)
+                i=left.next();
+            else 
+                j=Right.next();
+        }
+        return false;
+    }
+}
