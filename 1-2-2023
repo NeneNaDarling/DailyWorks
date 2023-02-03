@@ -1,0 +1,93 @@
+BST Node Delection 
+---------------------------------
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root==null) return root;
+
+        if(key<root.val){
+            root.left=deleteNode(root.left,key);
+        }
+        else if(key>root.val){
+            root.right=deleteNode(root.right,key);
+        }
+        else{
+            if(root.left==null) return root.right;
+            if(root.right==null) return root.left;
+
+            root.val=minvalue(root.right);
+            root.right=deleteNode(root.right,root.val);
+        }
+        return root;
+    }
+
+    public int minvalue(TreeNode root){
+        int min=root.val;
+        while(root.left!=null){
+            min=root.left.val;
+            root=root.left;
+        }
+        return min;
+    }
+}
+
+Serialize and dserialize
+------------------------------------------------
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root == null) return "";
+        Queue<TreeNode> q = new LinkedList<>();
+        StringBuilder res = new StringBuilder();
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (node == null) {
+                res.append("n ");
+                continue;
+            }
+            res.append(node.val + " ");
+            q.add(node.left);
+            q.add(node.right);
+        }
+        return res.toString();
+    }
+
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data == "") return null;
+        Queue<TreeNode> q = new LinkedList<>();
+        String[] values = data.split(" ");
+        TreeNode root = new TreeNode(Integer.parseInt(values[0]));
+        q.add(root);
+        for (int i = 1; i < values.length; i++) {
+            TreeNode parent = q.poll();
+            if (!values[i].equals("n")) {
+                TreeNode left = new TreeNode(Integer.parseInt(values[i]));
+                parent.left = left;
+                q.add(left);
+            }
+            if (!values[++i].equals("n")) {
+                TreeNode right = new TreeNode(Integer.parseInt(values[i]));
+                parent.right = right;
+                q.add(right);
+            }
+        }
+        return root;
+    }
+}
+
+
+Range Sum in BST
+----------------------------
+class Solution {
+    int ans=0;
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        if(root == null) return -1;
+        if(root.val >=L && root.val<=R) ans+= root.val;
+        if(root.val>L) rangeSumBST(root.left, L, R);
+        if(root.val<R) rangeSumBST(root.right, L, R);
+        return ans;
+    }
+}    
